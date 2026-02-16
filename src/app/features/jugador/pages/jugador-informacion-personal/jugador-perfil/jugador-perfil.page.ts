@@ -23,7 +23,7 @@ import { ViewWillEnter } from '@ionic/angular';
   templateUrl: './jugador-perfil.page.html',
   styleUrls: ['./jugador-perfil.page.scss'],
   standalone: true,
-  imports: [IonText, IonContent, IonButton, IonButtons, IonToolbar, IonHeader, IonIcon, IonCardContent, IonCardHeader, IonCard, IonCardTitle, IonTextarea, IonModal, IonList, IonItem, IonLabel, CommonModule, FormsModule, ReactiveFormsModule, SkeletonComponent, ProfileImageComponent, IonInput, SelectListSearchComponent]
+  imports: [IonContent, IonButton, IonButtons, IonToolbar, IonHeader, IonIcon, IonCardContent, IonCardHeader, IonCard, IonCardTitle, IonTextarea, IonModal, IonList, IonItem, IonLabel, CommonModule, FormsModule, ReactiveFormsModule, SkeletonComponent, ProfileImageComponent, IonInput, SelectListSearchComponent]
 })
 export class JugadorPerfilPage implements OnInit, ViewWillEnter {
 
@@ -31,6 +31,7 @@ export class JugadorPerfilPage implements OnInit, ViewWillEnter {
   @Input({required: true}) form!: FormGroup;
   @Input({required: true}) cargandoData: boolean = true;
   @Input({ required: true }) allEstatusJugador!: ICatalogo[];
+  @Input({ required: true }) allSexo!: ICatalogo[];
   @Input({required: true }) isReadOnly: boolean = false;
 
   public fotoPreviewUrl: string | null = null;
@@ -39,12 +40,18 @@ export class JugadorPerfilPage implements OnInit, ViewWillEnter {
   private readonly _contextLog = 'JugadorPerfilPage';
 
   @ViewChild('modalEstatusJugador', { static: true }) modalEstatusJugador!: IonModal;
-  public selectedEstatusJugadorNombre: string = 'Selecciona El Estatus Jugador';
+  public selectedEstatusJugadorNombre: string = 'Selecciona el estatus jugador';
   public selectedEstatusJugadorId: string | undefined = undefined;
   public estatusJugadorValido: boolean = false;
 
+  @ViewChild('modalSexo', { static: true }) modalSexo!: IonModal;
+  public selectedSexoNombre: string = 'Selecciona el género';
+  public selectedSexoId: string | undefined = undefined;
+  public sexoValido: boolean = false;
+
   @ViewChild('modalAttr', { static: true }) modalAttr!: IonModal;
   @ViewChild('modalBuscas', { static: true }) modalBuscas!: IonModal;
+  @ViewChild('modalGenero', { static: true }) modalGenero!: IonModal;
 //#endregion
 
 //#region Constructor
@@ -60,6 +67,7 @@ export class JugadorPerfilPage implements OnInit, ViewWillEnter {
     this.form.valueChanges.subscribe(val => {
       this.cargaFotoPerfil();
       this.setValoresCatalogoEstatusJugador(this.form.get('estatusBusquedaJugador')?.value);
+      this.setValoresCatalogoSexo(this.form.get('sexo')?.value);
     });
     this.cargaFotoPerfil();
     if (this.isReadOnly) {
@@ -81,6 +89,11 @@ export class JugadorPerfilPage implements OnInit, ViewWillEnter {
   private setValoresCatalogoEstatusJugador(item: ICatalogo): void {
     this.selectedEstatusJugadorNombre = item.nombre;
     this.selectedEstatusJugadorId = item.id
+  }
+
+   private setValoresCatalogoSexo(item: ICatalogo): void {
+    this.selectedSexoNombre = item.nombre;
+    this.selectedSexoId = item.id
   }
 
   private cargaFotoPerfil() {
@@ -161,7 +174,7 @@ export class JugadorPerfilPage implements OnInit, ViewWillEnter {
       this.form.controls['estatusBusquedaJugador'].setValue(estatusJugador);
       this.form.controls['estatusBusquedaJugador'].markAsTouched();
     } else {
-      this.selectedEstatusJugadorId = 'Selecciona El Estatus Jugador';
+      this.selectedEstatusJugadorId = 'Selecciona el estatus jugador';
       this.form.controls['estatusBusquedaJugador'].markAsTouched();
 
       if (this.esValido('estatusBusquedaJugador')) {
@@ -183,6 +196,58 @@ export class JugadorPerfilPage implements OnInit, ViewWillEnter {
     this.modalEstatusJugador.dismiss();
   }
 
+  public openSexoModal() {
+    // Aquí puedes preparar data o asegurar que el catálogo esté listo
+    // (Ej. this.currentSelectedEstatus = this.form.get('estatusBusquedaJugador')?.value?.id;)
+
+    // Abrir el modal manualmente
+    this.modalSexo.present();
+  }
+
+    /**
+   * Maneja el cambio de selección del estado (un solo ID)
+   * @param event El ID seleccionado (string) o undefined/null si se deseleccionó.
+   */
+  public sexoSelectionChanged(selectedId: string | undefined) {
+    // 1. Almacenar el ID seleccionado
+    this.selectedSexoId = selectedId;
+
+    // 2. Buscar el nombre para mostrarlo en la UI (UX)
+    const sexoSeleccionado = this.allSexo!.find(e => e.id === selectedId);
+
+    // 3. Actualizar la variable de la UI
+    if (sexoSeleccionado) {
+      this.selectedSexoNombre = sexoSeleccionado.nombre;
+      const sexo: ICatalogo = {
+        id: this.selectedSexoId!,
+        nombre: this.selectedSexoNombre
+      };
+
+      this.form.controls['sexo'].setValue(sexo);
+      this.form.controls['sexo'].markAsTouched();
+    } else {
+      this.selectedSexoId = 'Selecciona el sexo';
+      this.form.controls['sexo'].markAsTouched();
+
+      if (this.esValido('sexo')) {
+        this.sexoValido = true;
+      }
+    }
+
+    // 4. Cerrar el modal
+    this.modalSexo.dismiss();
+  }
+
+  public sexoCancel() {
+    this.form.get('sexo')?.markAsTouched();
+
+    if (this.esValido('sexo')) {
+      this.sexoValido = true;
+    }
+
+    this.modalSexo.dismiss();
+  }
+
   public openModalAttr() {
     this.modalAttr.present();
   }
@@ -197,6 +262,14 @@ export class JugadorPerfilPage implements OnInit, ViewWillEnter {
 
   public closeModalBuscas() {
     this.modalBuscas.dismiss();
+  }
+
+   public openModalSexo() {
+    this.modalGenero.present();
+  }
+
+  public closeModalSexo() {
+    this.modalGenero.dismiss();
   }
 
 //#endregion

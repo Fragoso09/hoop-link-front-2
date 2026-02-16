@@ -4,7 +4,8 @@ export const WebApiConstants = {
     getAllEstado: `catalogo/getAllEstado`,
     getAllMunicipioByEstado: (id:string) => `catalogo/getAllMunicipioByEstado/${id}`,
     getAllEstatusBusquedaJugador: `catalogo/getAllEstatusBusquedaJugador`,
-    getAllPosicionJugador: `catalogo/getAllPosicionJugador`
+    getAllPosicionJugador: `catalogo/getAllPosicionJugador`,
+    getAllSexo: `catalogo/getAllSexo`,
   },
   usuario: {
     save: `usuario/save`,
@@ -30,7 +31,9 @@ export const WebApiConstants = {
     saveVistaPerfil: (informacionPersonalId: number) => `coach/save-vista-perfil/${informacionPersonalId}`,
     saveFavoritoPerfil: (informacionPersonalId: number) => `coach/save-favorito-perfil/${informacionPersonalId}`,
     getAllJugadoresFavoritos: `coach/list-all-jugadores-favoritos`,
-    getTotalFavoritosPerfil: `coach/total-favoritos`
+    getTotalFavoritosPerfil: `coach/total-favoritos`,
+    save: `coach/save`,
+    getInformacion: `coach`,
   },
   comentario: {
     save: `comentarios-perfil-jugador/save`,

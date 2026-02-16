@@ -13,11 +13,11 @@
     </div>
 
     <ng-template #tab>
-      <app-jugador-perfil #perfilTab [form]="perfil" [cargandoData]="cargandoData" [allEstatusJugador]="estatusJugadorCatalogo || []" [isReadOnly]="isReadOnly" ></app-jugador-perfil>
-    </ng-template>
-
-    <ng-template #tab>
-      <app-jugador-fuerza-resistencia [form]="fuerzaResistencia" [cargandoData]="cargandoData" [isReadOnly]="isReadOnly" ></app-jugador-fuerza-resistencia>
+      <app-jugador-perfil #perfilTab [form]="perfil" [cargandoData]="cargandoData"
+        [allEstatusJugador]="estatusJugadorCatalogo || []"
+        [allSexo]="sexoCatalogo || []"
+        [isReadOnly]="isReadOnly"
+      ></app-jugador-perfil>
     </ng-template>
 
     <ng-template #tab>
@@ -30,6 +30,10 @@
 
     <ng-template #tab>
       <app-jugador-vision [form]="vision" [cargandoData]="cargandoData" [isReadOnly]="isReadOnly"></app-jugador-vision>
+    </ng-template>
+
+    <ng-template #tab>
+      <app-jugador-fuerza-resistencia [form]="fuerzaResistencia" [cargandoData]="cargandoData" [isReadOnly]="isReadOnly" ></app-jugador-fuerza-resistencia>
     </ng-template>
 
     <ng-template #tab>
@@ -130,7 +134,7 @@
               <div class="flex flex-row items-center">
                 @if (+comentario.autor === 0) {
                   <ion-avatar slot="start" class="jugador-avatar">
-                    <img [src]="'assets/images/generales/sin-foto.png'" alt="Foto de Perfil" />
+                    <img [src]="comentario.fotoPerfilPublicUrl || 'assets/images/generales/sin-foto.png'" alt="Foto de Perfil" />
                   </ion-avatar>&nbsp;&nbsp;
                   <ion-label class="text-2xl font-bold">{{comentario.nombre_autor}}</ion-label>
                 } @else {
@@ -160,4 +164,4 @@
 
 
 
-<app-news-bar></app-news-bar>
+<!-- <app-news-bar></app-news-bar> -->

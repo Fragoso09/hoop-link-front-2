@@ -8,7 +8,10 @@ export interface IPerfilInformacionPersonal {
   altura?: number,
   peso?: number,
   estatusBusquedaJugador?: ICatalogo,
+  sexo?: ICatalogo,
   medidaMano?: number,
   largoBrazo?: number,
+  aperturaBrazo?: number,
+  alcanceMaximo?: number,
   quienEres?: string,
 }
