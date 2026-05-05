@@ -79,7 +79,7 @@ export class ValidaCorreoPage implements OnInit, AfterViewInit, OnDestroy, ViewW
       next: (response:IResponse<string>) => {
         this._logger.log(LogLevel.Debug, `${this._contextLog} >> validaToken`, 'Toekn válido.', response);
         this.toastService.showMessage(SeverityMessageType.Success, 'Excelente', response.mensaje);
-        this.usuarioService.usuarioTokenValidado = true;
+        this.usuarioService.usuarioTokenValidado.set(true);
         setTimeout(() => this.router.navigateByUrl('/login'), 1500);
       },
       error: (error:IResponseError) => {

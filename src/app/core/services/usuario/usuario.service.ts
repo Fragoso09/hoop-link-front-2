@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { IRecuperaContrasena, IRegistro } from '../../../shared/interfaces/usuario/registro.interface';
 import { WebApiService } from '../web-api/web-api.service';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -13,8 +13,11 @@ import { LogLevel } from '../../enums';
 export class UsuarioService {
 
 //#region Propiedades
-  public esRegistro:boolean = false;
-  public usuarioTokenValidado = false;
+  // public esRegistro:boolean = false;
+  // public usuarioTokenValidado = false;
+
+  public esRegistro = signal<boolean>(false);
+  public usuarioTokenValidado = signal<boolean>(false);
 
   private readonly _contextLog = 'UsuarioService';
 //#endregion
