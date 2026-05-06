@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonButton, IonImg, IonFooter, IonHeader, IonLabel, IonCardHeader, IonCard, IonCardTitle, IonCardContent, IonIcon, IonInput, ModalController } from '@ionic/angular/standalone';
@@ -47,7 +47,14 @@ export class PortalPage implements OnInit, OnDestroy, ViewWillEnter {
   ) {
     addIcons({
       basketballOutline, statsChartOutline, peopleOutline, phonePortraitOutline, chatbubblesOutline, trophyOutline, checkmarkOutline
-    })
+    });
+
+    effect(() => {
+      if (this.usuarioService.esRegistro()) {
+        this.presentModal();
+        this.usuarioService.esRegistro.set(false); // Resetear
+      }
+    });
 
   }
 //#endregion
@@ -81,20 +88,20 @@ export class PortalPage implements OnInit, OnDestroy, ViewWillEnter {
 
   private inicializa() {
     this.defineTamanio();
-    this.muestraEsRegistro();
+    // this.muestraEsRegistro();
   }
 
   private defineTamanio() {
     this.widthImg = redibujaImg(this._imgWidht, 2);
   }
 
-  private muestraEsRegistro() {
-    if (this.usuarioService.esRegistro) {
-      // 🚀 CAMBIO: Si el servicio indica que debe mostrarse, llamamos a presentModal
-      this.presentModal();
-      this.usuarioService.esRegistro = false; // O la lógica para evitar que se muestre de nuevo
-    }
-  }
+  // private muestraEsRegistro() {
+  //   if (this.usuarioService.esRegistro) {
+  //     // 🚀 CAMBIO: Si el servicio indica que debe mostrarse, llamamos a presentModal
+  //     this.presentModal();
+  //     this.usuarioService.esRegistro = false; // O la lógica para evitar que se muestre de nuevo
+  //   }
+  // }
 
   async presentModal() {
     const modal = await this.modalCtrl.create({

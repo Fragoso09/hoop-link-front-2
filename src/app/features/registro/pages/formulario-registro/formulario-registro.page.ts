@@ -272,7 +272,7 @@ export class FormularioRegistroPage implements OnInit, OnDestroy, ViewWillEnter 
 
           this._cdr.detectChanges();
 
-          this.usuarioService.esRegistro = true;
+          this.usuarioService.esRegistro.set(true);
           this.router.navigateByUrl('/portal');
           // setTimeout(() => {
           // }, 50); // 50ms (milisegundos) suelen ser suficientes

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonCard, IonCardContent, IonNote, IonInput, IonInputPasswordToggle, IonButton, ModalController } from '@ionic/angular/standalone';
@@ -53,6 +53,13 @@ export class LoginPage implements OnInit, OnDestroy, ViewWillEnter {
       }),
     });
 
+    effect(() => {
+      if (this.usuarioService.usuarioTokenValidado()) {
+        this.presentModal();
+        this.usuarioService.usuarioTokenValidado.set(false); // Resetear
+      }
+    });
+
   }
 //#endregion Constructor
 
@@ -75,14 +82,14 @@ export class LoginPage implements OnInit, OnDestroy, ViewWillEnter {
 
 //#region Generales
   private inicializa() {
-    this.muestraEsTokenValido();
+    // this.muestraEsTokenValido();
   }
 
-  private muestraEsTokenValido() {
-    if (this.usuarioService.usuarioTokenValidado) {
-      this.presentModal();
-    }
-  }
+  // private muestraEsTokenValido() {
+  //   if (this.usuarioService.usuarioTokenValidado) {
+  //     this.presentModal();
+  //   }
+  // }
 
   public async enviar(): Promise<void>  {
     if(this.formulario.invalid) {

@@ -288,6 +288,11 @@ export class CoachInformacionPersonalPage implements OnInit, ViewWillEnter, OnDe
 
       const formData = dtoToFormData(formCompleto, this.form);
 
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
+
+
       this._coachService.saveInformcionPersonal(formData).pipe(
         takeUntil(this._destroy$),
         finalize(() => this._blockUserIService.hide())

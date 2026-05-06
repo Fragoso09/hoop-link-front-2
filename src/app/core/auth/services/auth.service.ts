@@ -1,24 +1,24 @@
-import { Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { toObservable } from '@angular/core/rxjs-interop';
+import {Injectable, signal} from '@angular/core';
+import {Router} from '@angular/router';
+import {toObservable} from '@angular/core/rxjs-interop';
 
-import { Observable, of, throwError, combineLatest } from 'rxjs';
-import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import {Observable, of, throwError, combineLatest} from 'rxjs';
+import {catchError, filter, map, switchMap, take, tap} from 'rxjs/operators';
 
-import { ILogin } from '../interfaces/login.interface';
-import { IAuthUser } from '../interfaces/auth-user.interface';
-import { IResponse } from '../../interfaces/response/response.interface';
-import { ITokens } from '../interfaces';
+import {ILogin} from '../interfaces/login.interface';
+import {IAuthUser} from '../interfaces/auth-user.interface';
+import {IResponse} from '../../interfaces/response/response.interface';
+import {ITokens} from '../interfaces';
 
-import { AuthApiService } from './auth-api.service';
-import { WebApiService } from '../../services/web-api/web-api.service';
-import { LoggerService } from '../../services/logger/logger.service';
+import {AuthApiService} from './auth-api.service';
+import {WebApiService} from '../../services/web-api/web-api.service';
+import {LoggerService} from '../../services/logger/logger.service';
 
-import { WebApiConstants } from '../../constants/web-api/web-api.constants';
+import {WebApiConstants} from '../../constants/web-api/web-api.constants';
 
-import { LogLevel } from '../../enums';
+import {LogLevel} from '../../enums';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthService {
 
 //#region Propiedades
@@ -43,13 +43,15 @@ export class AuthService {
     private readonly _webApiService: WebApiService,
     private readonly _router: Router,
     private readonly _logger: LoggerService
-  ) {}
+  ) {
+  }
+
 //#endregion
 
 //#region Servicios
   /** 🔐 LOGIN */
   login(credenciales: ILogin): Observable<IAuthUser | null> {
-    this._logger.log(LogLevel.Debug, `${this._contextLog} >> login`, 'Login iniciado', { username: credenciales.correo });
+    this._logger.log(LogLevel.Debug, `${this._contextLog} >> login`, 'Login iniciado', {username: credenciales.correo});
 
     return this._authApi.login(credenciales).pipe(
       map(res => res.data), // ⬅️ Extrae los tokens desde la respuesta
@@ -122,7 +124,7 @@ export class AuthService {
         this._logger.log(LogLevel.Info, `${this._contextLog} >> checkAuth`, 'Usuario cargado desde checkAuth', user);
       }),
       catchError(err => {
-        this._logger.log(LogLevel.Warn, `${this._contextLog} >> checkAuth`, 'Token inválido o expirado:', err )
+        this._logger.log(LogLevel.Warn, `${this._contextLog} >> checkAuth`, 'Token inválido o expirado:', err)
         this.clearTokens();
         this._user.set(null);
         this._authChecked.set(true);
@@ -200,6 +202,7 @@ export class AuthService {
       })
     );
   }
+
 //#endregion
 
 }
